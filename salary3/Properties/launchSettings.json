@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "salary3": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\Helen\\source\\repos\\salary3\\salary3\\Custom.cfg"
+    }
+  }
+}
