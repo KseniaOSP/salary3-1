@@ -10,10 +10,10 @@ class Master
         
         Settings settings = new Settings();
 
-        //foreach (var pair in settings)
-        //{
-        //    Console.WriteLine(pair);
-        //}
+        foreach (var pair in settings)
+        {
+            Console.WriteLine(pair);
+        }
 
         if (args.Length > 0)
         { 

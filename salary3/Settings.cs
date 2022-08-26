@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 namespace salary3
 {
     public class Settings : ICloneable, 
-        IEnumerable<KeyValuePair<string, string>> 
+        IEnumerable<KeyValuePair<string, string>>,
+        IComparable<Settings>
           
-    {
-        
-        private readonly IDictionary<string, string> dict = new Dictionary<string, string>();   
+    {        
+        private readonly IDictionary<string, string> dict = new Dictionary<string, string>();
 
         private Settings(Settings s)
         {
             dict = new Dictionary<string, string>(s.dict);
         }
-        
         public Settings() 
         {
             AddConfigFile("Global.cfg");
@@ -56,7 +55,7 @@ namespace salary3
 
         public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
         {
-            return dict.GetEnumerator();
+            return new SettingsEnumerator(this);
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -64,6 +63,51 @@ namespace salary3
             return GetEnumerator();
         }
 
+        public int CompareTo(Settings? other)
+        {
+            int thisSize = this.dict.Count;
+            int otherSize = other.dict.Count;
+            if (thisSize == otherSize)
+            {
+                return 0;
+            }
+            else if (thisSize < otherSize)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
+        }
+
+        class SettingsEnumerator : IEnumerator<KeyValuePair<string, string>>
+        {
+            readonly IEnumerator<KeyValuePair<string, string>> dictEnumerator;
+
+            public SettingsEnumerator(Settings settings)
+            {
+                dictEnumerator = settings.dict.GetEnumerator();
+            }
+            public KeyValuePair<string, string> Current => dictEnumerator.Current;
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+                dictEnumerator.Dispose();
+            }
+
+            public bool MoveNext()
+            {
+                return dictEnumerator.MoveNext();
+            }
+
+            public void Reset()
+            {
+                dictEnumerator.Reset();
+            }
+        }
 
 
     }
